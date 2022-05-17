@@ -1,6 +1,11 @@
+package hust.soict.hedspi.aims;
+
+import hust.soict.hedspi.aims.disc.DigitalVideoDisc;
+import hust.soict.hedspi.aims.order.Order;
+
 public class Aims {
     public static void main(String[] args) {
-        DigitalVideoDisc dvd1 = new DigitalVideoDisc("The Lion King"); 
+        DigitalVideoDisc dvd1 = new DigitalVideoDisc("The Lion King");
             dvd1.setCategory("Animation");
             dvd1.setDirector("Roger Allers");
             dvd1.setLength(87);
