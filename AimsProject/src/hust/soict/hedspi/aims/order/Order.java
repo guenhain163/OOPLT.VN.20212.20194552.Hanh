@@ -1,3 +1,8 @@
+package hust.soict.hedspi.aims.order;
+
+import hust.soict.hedspi.aims.disc.DigitalVideoDisc;
+import hust.soict.hedspi.aims.utils.MyDate;
+
 public class Order {
     // Declare 1 constant: maximum number of products per order
     public static final int MAX_NUMBER_ORDERED = 10;
@@ -99,7 +104,7 @@ public class Order {
 
     // Phương thức in đơn hàng
     public void printOrder() {
-        System.out.println("***********************Order***********************");
+        System.out.println("***********************hust.soict.hedspi.aims.order.Order***********************");
         System.out.println("Date: " + this.dateOrdered);
         System.out.println("Ordered Items:");
         for (int i = 0; i < this.qtyOrdered; i++) {
@@ -107,9 +112,23 @@ public class Order {
                     itemOrdered[i].getCategory() + " - " +
                     itemOrdered[i].getDirector() + " - " + itemOrdered[i].getLength() + ": " + itemOrdered[i].getCost() + " $");
         }
-        System.out.println("Total cost: " + totalCost());
+        System.out.printf("Total cost: %.2f\n", totalCost());
         System.out.println("***************************************************");
     }
 
 
+    // Xây dựng phương thức chọn một sản phẩm
+    // ngẫu nhiên trong danh sách và miễn phí cho sản phẩm đó
+    public DigitalVideoDisc getALuckyItem() {
+        Random rd = new Random();
+        int luckyNumber = rd.nextInt(this.qtyOrdered);
+        this.itemOrdered[luckyNumber].setCost(0);
+//        for (int i = 0; i < this.qtyOrdered; i++) {
+//            if (i == luckyNumber) {
+//                this.itemOrdered[i].setCost(0);
+//                break;
+//            }
+//        }
+        return this.itemOrdered[luckyNumber];
+    }
 }
