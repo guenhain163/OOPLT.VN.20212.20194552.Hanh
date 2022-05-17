@@ -5,8 +5,8 @@ public class MyDate {
     private static final int MIN_YEAR  = 1;
     private static final int MAX_YEAR  = 9999;
 
-    private static final int MIN_MONTH = 1;  // human friendly
-    private static final int MAX_MONTH = 12; // human friendly
+    private static final int MIN_MONTH = 1;
+    private static final int MAX_MONTH = 12;
 
     private int year;
     private int month;
@@ -15,15 +15,16 @@ public class MyDate {
     private String[] strMonths    = {"Jan", "Feb", "Mar", "Apr", "May", "Jun"
             ,"Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
 
-    private String[] strDays      = {"Sunday", "Monday", "Tuesday", "Wednesday"
-            ,"Thursday", "Friday", "Saturday"};
+    private String[] strFullMonths = {"January", "February", "March", "April", "May", "June",
+            "July", "August", "September", "October", "November", "December"};
+
+    private String[] strDays = {"1st", "2nd", "3rd", "4th", "5th", "6th", "7th", "8th", "9th", "10th",
+            "11th", "12th", "13th", "14th", "15th", "16th", "17th", "18th", "19th", "20th",
+            "21st", "22nd", "23rd", "24th", "25th", "26th", "27th", "28th", "29th", "30th", "31st"};
 
     private static final int[] daysInMonths            = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
     private static final int[] nonLeapYearMonthNumbers = {0, 3, 3, 6, 1, 4, 6, 2, 5, 0, 3, 5};
     private static final int[] leapYearMonthNumbers    = {6, 2, 3, 6, 1, 4, 6, 2, 5, 0, 3, 5};
-
-    private boolean isPreviousDayOperation   = false;
-    private boolean isPreviousMonthOperation = false;
 
     public MyDate() {
         setDate(1900, 1, 1);
@@ -123,6 +124,18 @@ public class MyDate {
                 && (1         <= day    && day   <= getMonthLastDay(year, month));
     }
 
+    public int getYear() {
+        return this.year;
+    }
+
+    public int getMonth() {
+        return this.month;
+    }
+
+    public int getDay() {
+        return this.day;
+    }
+
     public void setDate(int year, int month, int day) {
         if (!isValidDate(year, month, day)) {
             throw new IllegalArgumentException("Invalid year, month, or day!");
@@ -153,4 +166,30 @@ public class MyDate {
         this.day = day;
     }
 
+    public void print() {
+        System.out.print(strFullMonths[this.getMonth() - 1] + " ");
+        System.out.print(strDays[this.getDay() - 1] + " ");
+        System.out.println(this.getYear());
+    }
+
+    public void printFormat(String format) {
+        if ("yyyy-MM-dd".equals(format)) {
+            System.out.println(this.getYear() + "-" + (this.getMonth() < 10 ? "0" : "") + this.getMonth() + "-" +
+                    (this.getDay() < 10 ? "0" : "") + this.getYear());
+        }
+        if ("d/M/yyyy".equals(format)) {
+            System.out.println(this.getDay() + "/" + this.getMonth() + "/" + this.getYear());
+        }
+        if ("dd-MMM-yyy".equals(format)) {
+            System.out.println((this.getDay() < 10 ? "0" : "") + this.getDay() + "-" +
+                    strMonths[this.getMonth() - 1] + "-" + this.getYear());
+        }
+        if ("MMM d yyyy".equals(format)) {
+            System.out.println(strMonths[this.getMonth() - 1] + " " + this.getDay() + " " + this.getYear());
+        }
+        if ("MM-dd-yyyy".equals(format)) {
+            System.out.println((this.getMonth() < 10 ? "0" : "") + this.getMonth() + "-" +
+                    (this.getDay() < 10 ? "0" : "") + this.getYear() + "-" + this.getYear());
+        }
+    }
 }
