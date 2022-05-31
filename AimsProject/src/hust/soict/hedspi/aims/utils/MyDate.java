@@ -1,5 +1,6 @@
 package hust.soict.hedspi.aims.utils;
 
+import java.time.LocalDate;
 import java.util.*;
 
 public class MyDate {
@@ -29,14 +30,18 @@ public class MyDate {
     private static final int[] leapYearMonthNumbers    = {6, 2, 3, 6, 1, 4, 6, 2, 5, 0, 3, 5};
 
     public MyDate() {
-        setDate(1900, 1, 1);
+        super();
+        LocalDate currentDate = LocalDate.now();
+        this.setDate(currentDate.getYear(), currentDate.getMonthValue(), currentDate.getDayOfMonth());
     }
 
     public MyDate(int year, int month, int day) {
-        setDate(year, month, day);
+        super();
+        this.setDate(year, month, day);
     }
 
     public MyDate(String  day,  String  month, String year) {
+        super();
         switch (day) {
             case "first" -> this.setDay(1);
             case "second" -> this.setDay(2);
@@ -90,9 +95,9 @@ public class MyDate {
             }
         }
 
-        String[] words = year.split("\\s");
+        String[] words = year.split("\\s+");
         if (words.length != 2) {
-            System.out.println("Sai");
+            System.out.println("Wrong!");
         } else {
             this.setYear((int)(getNumber(words[0]) * 100 + getNumber(words[1])));
         }
