@@ -2,51 +2,39 @@ package hust.soict.hedspi.aims.media;
 
 import java.util.Scanner;
 
-public class DigitalVideoDisc extends Media {
+public class DigitalVideoDisc extends Disc implements Playable {
     // Attribute declaration
     private String director;
     private int length;
 
-    // 1. Constructor không tham số
-    public DigitalVideoDisc() {
-        super();
+    public DigitalVideoDisc(int id, String title, float cost) {
+        super(id, title, cost);
     }
 
-    // 2.Constructor có 1 tham số
-    public DigitalVideoDisc(String title) {
-        super(title);
+    public DigitalVideoDisc(int id, String title, int length, float cost) {
+        super(id, title,length, cost);
     }
 
-    // 3.Constructor có 2 tham số
-    public DigitalVideoDisc(String title, String category) {
-        super(title, category);
+    public DigitalVideoDisc(int id, String title, String category, int length, float cost ) {
+        super(id, title, category,length, cost);
     }
 
-    // 4.Constructor có 3, 4, 5, ... tham số
-    public DigitalVideoDisc(String title, String category, String director) {
-        super(title, category);
-        this.director = director;
+    public DigitalVideoDisc(int id, String title, String category, int length, String director, float cost) {
+        super(id, title, category, length, director, cost);
     }
 
-    // 5.Constructor với tất cả các tham số
-    public DigitalVideoDisc(String title, String category, String director, int length, float cost) {
-        super(title, category, cost);
-        this.director = director;
-        this.length = length;
-    }
-
-    public void createDigitalVideoDisc() {
-        super.createMedia();
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Input Director: ");
-        this.director = sc.nextLine();
-        System.out.println("Input the length: ");
-        this.length = sc.nextInt();
-    }
+//    public void createDigitalVideoDisc() {
+//        super.createMedia();
+//        Scanner sc = new Scanner(System.in);
+//        System.out.println("Input Director: ");
+//        this.director = sc.nextLine();
+//        System.out.println("Input the length: ");
+//        this.length = sc.nextInt();
+//    }
 
     // get and set methods
     public String getDirector() {
-        return this.director;
+        return director;
     }
 
     public void setDirector(String director) {
@@ -54,15 +42,15 @@ public class DigitalVideoDisc extends Media {
     }
 
     public int getLength(){
-        return this.length;
+        return length;
     }
 
-    public void setLength(int length) {
+    public boolean setLength(int length) {
         if (length > 0) {
             this.length = length;
-        }
-        else this.length = 0;
-
+            return true;
+        } else
+            return false;
     }
 
     // Method to print information of DVD object
@@ -79,5 +67,12 @@ public class DigitalVideoDisc extends Media {
     public boolean search(String title) {
         String searchStr = this.getTitle();
         return searchStr.toLowerCase().contains(title.toLowerCase());
+    }
+
+    @Override
+    public void play() {
+        System.out.println("Playing DVD: " + this.getTitle());
+        System.out.println("DVD length: " + this.getLength());
+
     }
 }
