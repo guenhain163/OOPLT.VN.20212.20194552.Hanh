@@ -1,11 +1,11 @@
-package hust.soict.hedspi.aims.media;
+package hust.soict.hedspi.aims.media.disc;
 
-import java.util.Scanner;
+import hust.soict.hedspi.aims.media.Media;
 
-public class DigitalVideoDisc extends Disc implements Playable {
+public class DigitalVideoDisc extends Disc implements Playable, Comparable<Media> {
     // Attribute declaration
-    private String director;
-    private int length;
+    protected String director;
+    protected int length;
 
     public DigitalVideoDisc(int id, String title, float cost) {
         super(id, title, cost);
@@ -23,16 +23,19 @@ public class DigitalVideoDisc extends Disc implements Playable {
         super(id, title, category, length, director, cost);
     }
 
-//    public void createDigitalVideoDisc() {
-//        super.createMedia();
-//        Scanner sc = new Scanner(System.in);
-//        System.out.println("Input Director: ");
-//        this.director = sc.nextLine();
-//        System.out.println("Input the length: ");
-//        this.length = sc.nextInt();
-//    }
-
     // get and set methods
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public void setCost(float cost) {
+        this.cost = cost;
+    }
+
     public String getDirector() {
         return director;
     }
@@ -53,16 +56,6 @@ public class DigitalVideoDisc extends Disc implements Playable {
             return false;
     }
 
-    // Method to print information of DVD object
-//    public void printInfo(){
-//        System.out.println("------------DVD Info------------");
-//        System.out.println("Title: " + this.title);
-//        System.out.println("Category: " + this.category);
-//        System.out.println("Director: " + this.director);
-//        System.out.println("Length: " + this.length);
-//        System.out.println("Cost: " + this.cost);
-//    }
-
     // Xây dựng phương thức tìm kiếm theo title
     public boolean search(String title) {
         String searchStr = this.getTitle();
@@ -74,5 +67,12 @@ public class DigitalVideoDisc extends Disc implements Playable {
         System.out.println("Playing DVD: " + this.getTitle());
         System.out.println("DVD length: " + this.getLength());
 
+    }
+
+    public int compareTo(Media media) {
+        if (media instanceof DigitalVideoDisc) {
+            return Float.compare(this.getCost(), media.getCost());
+        } else
+            return super.compareTo(media);
     }
 }
