@@ -1,10 +1,15 @@
 package hust.soict.hedspi.aims;
 
 import hust.soict.hedspi.aims.media.*;
+import hust.soict.hedspi.aims.media.book.Book;
+import hust.soict.hedspi.aims.media.disc.CompactDisc;
+import hust.soict.hedspi.aims.media.disc.DigitalVideoDisc;
+import hust.soict.hedspi.aims.media.disc.Track;
 import hust.soict.hedspi.aims.order.Order;
-import hust.soict.hedspi.aims.thread.MemoryDaemon;
 
 import java.util.ArrayList;
+import java.util.ArrayList;
+import java.util.*;
 import java.util.Scanner;
 
 public class Aims {
@@ -19,6 +24,10 @@ public class Aims {
 //		Thread thread = new Thread(daemon);
 //		thread.setDaemon(true);
 //		thread.start();
+//		Collections collection = new ArrayList();
+//		java.util.Collections collection = new ArrayList();
+//      Add the DVD objects to the ArrayList
+//		collection.add(dvd2);
         //option
         int option;
         int flagOption = 0;

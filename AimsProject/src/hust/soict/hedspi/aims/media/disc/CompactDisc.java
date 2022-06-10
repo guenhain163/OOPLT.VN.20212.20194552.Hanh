@@ -1,4 +1,6 @@
-package hust.soict.hedspi.aims.media;
+package hust.soict.hedspi.aims.media.disc;
+
+import hust.soict.hedspi.aims.media.Media;
 
 import java.util.ArrayList;
 
@@ -14,6 +16,10 @@ public class CompactDisc extends Disc implements Playable {
 
     public String getArtist() {
         return artist;
+    }
+
+    public ArrayList<Track> getTracks() {
+        return tracks;
     }
 
     public int getLength() {
@@ -51,5 +57,17 @@ public class CompactDisc extends Disc implements Playable {
                 track.play();
             }
         }
+    }
+
+    public int compareTo(Media media) {
+        if (media instanceof CompactDisc) {
+            CompactDisc cd = (CompactDisc)media;
+            if (tracks.size() == cd.tracks.size())
+                return Integer.compare(this.length, cd.getLength());
+            else if(tracks.size() < cd.tracks.size())
+                return -1;
+            else return 1;
+        } else
+            return super.compareTo(media);
     }
 }

@@ -1,4 +1,6 @@
-package hust.soict.hedspi.aims.media;
+package hust.soict.hedspi.aims.media.disc;
+
+import hust.soict.hedspi.aims.media.Media;
 
 public class Disc extends Media {
     protected int length;
