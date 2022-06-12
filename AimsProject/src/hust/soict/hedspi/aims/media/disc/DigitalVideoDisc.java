@@ -23,6 +23,10 @@ public class DigitalVideoDisc extends Disc implements Playable, Comparable<Media
         super(id, title, category, length, director, cost);
     }
 
+    public DigitalVideoDisc() {
+
+    }
+
     // get and set methods
     public void setTitle(String title) {
         this.title = title;

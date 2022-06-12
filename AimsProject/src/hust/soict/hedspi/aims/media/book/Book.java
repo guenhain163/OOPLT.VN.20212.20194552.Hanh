@@ -27,6 +27,10 @@ public class Book extends Media {
         }
     }
 
+    public Book() {
+        super();
+    }
+
     public List<String> getAuthors() {
         return authors;
     }

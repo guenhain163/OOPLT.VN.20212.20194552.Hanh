@@ -14,6 +14,10 @@ public class CompactDisc extends Disc implements Playable {
         this.category = category;
     }
 
+    public CompactDisc() {
+        super();
+    }
+
     public String getArtist() {
         return artist;
     }

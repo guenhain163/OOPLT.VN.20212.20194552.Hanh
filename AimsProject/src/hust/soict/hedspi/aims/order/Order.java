@@ -34,6 +34,18 @@ public class Order {
         return dateOrdered;
     }
 
+    public static Order getOrder() {
+        if(nbOrders < MAX_LIMITED_ORDERED) {
+            Order newOrder = new Order();
+            nbOrders++;
+            System.out.println("Creat new order successfully!");
+            return newOrder;
+        } else {
+            System.out.println("The numbers of orders is almost max.");
+            return null;
+        }
+    }
+
     public void addMedia(Media media) {
         if (!(itemsOrdered.contains(media))) {
             this.itemsOrdered.add(media);
@@ -44,8 +56,8 @@ public class Order {
     }
 
     public void addMedia(Media[] mediaList) {
-        for (int i = 0; i < mediaList.length; i++) {
-            this.addMedia(mediaList[i]);
+        for (Media media : mediaList) {
+            this.addMedia(media);
         }
     }
 
