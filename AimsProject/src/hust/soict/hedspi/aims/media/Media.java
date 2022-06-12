@@ -4,8 +4,6 @@ import hust.soict.hedspi.aims.media.book.Book;
 import hust.soict.hedspi.aims.media.disc.CompactDisc;
 import hust.soict.hedspi.aims.media.disc.DigitalVideoDisc;
 
-import java.util.Scanner;
-
 public abstract class Media implements Comparable<Media> {
     protected String title;
     protected String category;
@@ -23,6 +21,10 @@ public abstract class Media implements Comparable<Media> {
         this.category = category;
     }
 
+    public Media() {
+
+    }
+
     public String getTitle() {
         return this.title;
     }
@@ -37,6 +39,10 @@ public abstract class Media implements Comparable<Media> {
 
     public int getId() {
         return id;
+    }
+
+    public void setCost(float cost) {
+        this.cost = cost;
     }
 
     public boolean equals(Object obj) {

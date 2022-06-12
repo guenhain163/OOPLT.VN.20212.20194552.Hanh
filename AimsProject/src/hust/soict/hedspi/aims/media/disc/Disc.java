@@ -25,6 +25,10 @@ public class Disc extends Media {
         this.director = director;
     }
 
+    public Disc() {
+
+    }
+
     public int getLength() {
         return length;
     }

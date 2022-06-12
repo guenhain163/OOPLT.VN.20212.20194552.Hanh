@@ -1,8 +1,5 @@
 package hust.soict.hedspi.aims.media.disc;
 
-import hust.soict.hedspi.aims.media.Media;
-import hust.soict.hedspi.aims.media.book.Book;
-
 public class Track implements Playable {
     private String title;
     private int length;
@@ -10,6 +7,10 @@ public class Track implements Playable {
     public Track(String title, int length) {
         this.title = title;
         this.length = length;
+    }
+
+    public Track() {
+
     }
 
     public String getTitle() {
