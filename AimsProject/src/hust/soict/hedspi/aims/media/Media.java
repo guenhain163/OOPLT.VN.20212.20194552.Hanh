@@ -1,28 +1,29 @@
 package hust.soict.hedspi.aims.media;
 
-import hust.soict.hedspi.aims.media.book.Book;
-import hust.soict.hedspi.aims.media.disc.CompactDisc;
-import hust.soict.hedspi.aims.media.disc.DigitalVideoDisc;
-
-public abstract class Media implements Comparable<Media> {
+public abstract class Media implements Comparable<Object> {
     protected String title;
     protected String category;
     protected float cost;
-    protected int id = 1;
-
-    public Media(int id, String title, float cost) {
-        this.id = id;
-        this.title = title;
-        this.cost = cost;
-    }
-
-    public Media(int id, String title, String category, float cost) {
-        this(id, title, cost);
-        this.category = category;
-    }
+    protected int id;
 
     public Media() {
 
+    };
+
+    public Media(int id, String title) {
+        this.id = id;
+        this.title = title;
+    }
+    public Media(int id, String title, String category) {
+        this.id = id;
+        this.title = title;
+        this.category = category;
+    }
+    public Media(int id, String title, String category, float cost){
+        this.id = id;
+        this.title = title;
+        this.category = category;
+        this.cost = cost;
     }
 
     public String getTitle() {
@@ -37,6 +38,10 @@ public abstract class Media implements Comparable<Media> {
         return this.cost;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public int getId() {
         return id;
     }
@@ -45,32 +50,27 @@ public abstract class Media implements Comparable<Media> {
         this.cost = cost;
     }
 
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-
-        Media other = (Media) obj;
-        if (id != other.id)
-            return false;
-
-        return true;
+    public boolean equals(Object obj)  throws NullPointerException, ClassCastException {
+        if (obj != null){
+            if (obj instanceof Media){
+                return this.getTitle().equalsIgnoreCase(((Media) obj).getTitle()) && this.getCost() == ((Media) obj).getCost();
+            } else {
+                throw new ClassCastException("ERROR: Object casting");
+            }
+        } else {
+            throw new NullPointerException("ERROR: Null pointerexception");
+        }
     }
 
-    public int compareTo(Media media) {
-        if (this instanceof Book &&
-                (media instanceof DigitalVideoDisc || media instanceof CompactDisc))
-            return -1;
-        if(this instanceof DigitalVideoDisc && media instanceof CompactDisc)
-            return -1;
-        if(this instanceof CompactDisc &&
-                (media instanceof DigitalVideoDisc || media instanceof Book))
-            return 1;
-        if(this instanceof DigitalVideoDisc && media instanceof Book)
-            return 1;
-        return 0;
+    public int compareTo(Object obj) throws NullPointerException, ClassCastException {
+        if (obj != null){
+            if (obj instanceof Media){
+                return this.title.compareTo(((Media) obj).getTitle());
+            } else {
+                throw new ClassCastException("ERROR: Object casting");
+            }
+        } else {
+            throw new NullPointerException("ERROR: Null pointer exception");
+        }
     }
 }

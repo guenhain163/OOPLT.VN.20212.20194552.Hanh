@@ -1,28 +1,59 @@
 package hust.soict.hedspi.aims.media.disc;
 
+import hust.soict.hedspi.aims.exceptions.PlayerException;
 import hust.soict.hedspi.aims.media.Media;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class CompactDisc extends Disc implements Playable {
     private String artist;
-    private ArrayList<Track> tracks = new ArrayList<Track>();
-
-    public CompactDisc(int id, String title, String category, String artist, float cost) {
-        super(id, title, cost);
-        this.artist = artist;
-        this.category = category;
-    }
+    private List<Track> tracks = new ArrayList<Track>();
+    public String message;
 
     public CompactDisc() {
         super();
+    }
+
+    public CompactDisc(String artist, List<Track> tracks) {
+        this.artist = artist;
+        this.tracks = tracks;
+    }
+
+    public CompactDisc(int id, String title, String category, String artist, List<Track> tracks) {
+        super(id, title, category);
+        this.artist = artist;
+        this.tracks = tracks;
+    }
+
+    public CompactDisc(int id, String title, String category, float cost, String artist, List<Track> tracks) {
+        super(id, title, category, cost);
+        this.artist = artist;
+        this.tracks = tracks;
+    }
+    public CompactDisc(int id,String title,String category,float cost ,String artist){
+        super(id,title,category,cost);
+        this.artist = artist;
+    }
+    public CompactDisc(int id,String title,String category,float cost ,String artist,int length){
+        super(id,title,category,cost,length);
+        this.artist = artist;
+    }
+    public CompactDisc(int id, String title, String category, float cost,String director, String artist,int length) {
+        super(id, title, category, cost,director,length);
+        this.artist = artist;
+    }
+
+    public CompactDisc(int id, String title, String category, String artist, float cost) {
+        super(id, title, category, cost);
+        this.artist = artist;
     }
 
     public String getArtist() {
         return artist;
     }
 
-    public ArrayList<Track> getTracks() {
+    public List<Track> getTracks() {
         return tracks;
     }
 
@@ -51,27 +82,48 @@ public class CompactDisc extends Disc implements Playable {
         }
     }
 
-    @Override
-    public void play() {
-        System.out.println("Playing CD: " + this.getTitle());
-        System.out.println("CD length: " + this.getLength());
+    public int getNumOfTrack(){
+        return tracks.size();
+    }
 
-        if(this.getLength() > 0) {
+    public int searchTrack(Track cmpTrack) {
+        for (int i = 0; i < this.tracks.size(); i++) {
+            if (this.tracks.get(i).isEqualAll(cmpTrack)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    @Override
+    public void play() throws PlayerException {
+        this.message = "Playing CD: " + this.getTitle() + "\nCD length: " + this.getLength();
+        if (this.getLength() > 0) {
             for(Track track: tracks) {
                 track.play();
+                message += track.getMessage();
             }
+        } else {
+            throw new PlayerException("ERROR: CD length is non-positive");
         }
     }
 
-    public int compareTo(Media media) {
-        if (media instanceof CompactDisc) {
-            CompactDisc cd = (CompactDisc)media;
-            if (tracks.size() == cd.tracks.size())
-                return Integer.compare(this.length, cd.getLength());
-            else if(tracks.size() < cd.tracks.size())
+    public int compareTo(Media o) {
+        if(o instanceof CompactDisc){
+            if(this.getNumOfTrack() > ((CompactDisc) o).getNumOfTrack())
+                return 1;
+            else if (this.getNumOfTrack() < ((CompactDisc) o).getNumOfTrack())
                 return -1;
-            else return 1;
-        } else
-            return super.compareTo(media);
+            else{
+                if(this.getLength() > ((CompactDisc) o).getLength())
+                    return 1;
+                else if (this.getLength() > ((CompactDisc) o).getLength())
+                    return -1;
+                else
+                    return super.compareTo(o);
+            }
+        }
+        else
+            return super.compareTo(o);
     }
 }

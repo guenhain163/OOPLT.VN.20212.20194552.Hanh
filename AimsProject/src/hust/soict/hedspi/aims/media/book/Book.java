@@ -10,11 +10,19 @@ public class Book extends Media {
     public List<String> contentTokens = new ArrayList<String>();
     public Map<String, Integer> wordFrequency = new TreeMap<String, Integer>();
 
-    public Book(int id, String title, float cost) {
-        super(id, title, cost);
+    public Book() {
+        super();
     }
 
-    public Book(int id, String title, String category, float cost) {
+    public Book(int id,String title){
+        super(id,title);
+    }
+
+    public Book(int id, String title, String category){
+        super(id, title, category);
+    }
+
+    public Book(int id, String title, String category, float cost){
         super(id, title, category, cost);
     }
 
@@ -27,9 +35,16 @@ public class Book extends Media {
         }
     }
 
-    public Book() {
-        super();
+    public Book(int id, String title, String category, float cost, ArrayList<String> authors, String content) {
+        super(id, title, category, cost);
+        if (authors.size() != 0) {
+            this.authors = authors;
+            this.content = content;
+        } else {
+            System.out.println("Authors list is empty !");
+        }
     }
+
 
     public List<String> getAuthors() {
         return authors;
@@ -69,21 +84,16 @@ public class Book extends Media {
     }
 
     private  void processContent() {
-        // split by \\s and convert Array<String> to List<String>
-        // add all to contentTokens
+        content = content.replace('.',' ');
         contentTokens.addAll(Arrays.asList(content.split("\\s+")));
-        // contentToken has been sorted
         Collections.sort(contentTokens);
-        // loop in List contentToken
         for (String string : contentTokens) {
-            // if don't have key --> put to Map
-            // else value++ --> put to Map
             if (!wordFrequency.containsKey(string)) {
                 wordFrequency.put(string, 1);
             } else {
-                int a = wordFrequency.get(string);
-                a++;
-                wordFrequency.put(string, a);
+                int numOfToken = wordFrequency.get(string);
+                numOfToken++;
+                wordFrequency.put(string, numOfToken);
             }
         }
     }
@@ -95,10 +105,17 @@ public class Book extends Media {
         string.append("Title: ").append(super.title).append("\n");
         string.append("Category: ").append(super.category).append("\n");
         string.append("Cost: ").append(super.cost).append("\n");
+        string.append("Author: ").append(getAuthors()).append("\n");
         string.append("Number of tokens: ").append(contentTokens.size()).append("\n");
+        string.append("Work frequency \\tWord\\n");
         for(Map.Entry<String, Integer> entry: wordFrequency.entrySet()) {
             string.append(entry.getKey()).append(" - ").append(entry.getValue()).append("\n");
         }
         return string.toString();
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        return super.compareTo(o);
     }
 }

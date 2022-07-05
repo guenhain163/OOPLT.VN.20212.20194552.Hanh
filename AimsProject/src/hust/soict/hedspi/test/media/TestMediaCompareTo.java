@@ -11,19 +11,19 @@ import java.util.List;
 public class TestMediaCompareTo {
     public static void main(String[] args) {
         DigitalVideoDisc dvd1 = new DigitalVideoDisc
-                (1,"The Lion King", "Animation", 87, "Roger Allers", 19.95f);
+                (1,"The Lion King", "Animation", 19.95f, "Roger Allers", 87);
 
         DigitalVideoDisc dvd2 = new DigitalVideoDisc
-                (2,"Aladdin", "Science Fiction", 124, "George Lucas", 24.95f);
+                (2,"Aladdin", "Science Fiction", 24.95f, "George Lucas", 124);
 
         DigitalVideoDisc dvd3 = new DigitalVideoDisc
-                (3,"Star Wars", "Animation", 90, "John Musker",18.99f);
+                (3,"Star Wars", "Animation", 18.99f, "John Musker", 90);
         
         CompactDisc cd1 = new CompactDisc(4, "Poem", "music", "IU", 12.3f);
         CompactDisc cd2 = new CompactDisc(5, "Lilac", "music", "IU", 32.4f);
 
-        Book b1 = new Book(6, "NewBegin", 8.1f);
-        Book b2 = new Book(7, "Nice", 10.4f);
+        Book b1 = new Book(6, "NewBegin", "NewBegin", 8.1f);
+        Book b2 = new Book(7, "Nice", "Nice", 10.4f);
 
         java.util.Collection<Media> collection = new java.util.ArrayList<>();
         collection.add(dvd2);

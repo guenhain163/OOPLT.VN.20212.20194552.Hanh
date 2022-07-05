@@ -1,11 +1,10 @@
 package hust.soict.hedspi.gui.aims;
 
 
+import hust.soict.hedspi.aims.media.book.Book;
 import hust.soict.hedspi.aims.media.disc.CompactDisc;
 import hust.soict.hedspi.aims.media.disc.DigitalVideoDisc;
 import hust.soict.hedspi.aims.media.disc.Track;
-import hust.soict.hedspi.aims.media.book.Book;
-import hust.soict.hedspi.aims.order.Order;
 
 import javax.swing.*;
 import java.awt.*;
@@ -54,7 +53,7 @@ public class Menu extends JFrame {
         setLayout(new BoxLayout(cp, BoxLayout.Y_AXIS));
         create.addActionListener(evt -> {
             msg.setText("Created new order success. Let's choose your option");
-            Order.getOrder();
+//            Order.getOrder();
         });
 
         quit.addActionListener(evt -> msg.setText("Thanks. Exit"));

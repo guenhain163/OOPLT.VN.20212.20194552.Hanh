@@ -1,15 +1,16 @@
 package hust.soict.hedspi.aims;
 
-import hust.soict.hedspi.aims.media.*;
+import hust.soict.hedspi.aims.exceptions.LimitExceedException;
+import hust.soict.hedspi.aims.exceptions.PlayerException;
+import hust.soict.hedspi.aims.media.Media;
 import hust.soict.hedspi.aims.media.book.Book;
 import hust.soict.hedspi.aims.media.disc.CompactDisc;
 import hust.soict.hedspi.aims.media.disc.DigitalVideoDisc;
 import hust.soict.hedspi.aims.media.disc.Track;
 import hust.soict.hedspi.aims.order.Order;
 
+import javax.naming.LimitExceededException;
 import java.util.ArrayList;
-import java.util.ArrayList;
-import java.util.*;
 import java.util.Scanner;
 
 public class Aims {
@@ -18,16 +19,7 @@ public class Aims {
     private static final ArrayList<Media> StoreMedias = new ArrayList<>();
     private static final ArrayList<Order> StoreOrders = new ArrayList<>();
 
-    public static void main(String[] args) {
-//		Creat new MemoryDaemon object
-//		MemoryDaemon daemon = new MemoryDaemon();
-//		Thread thread = new Thread(daemon);
-//		thread.setDaemon(true);
-//		thread.start();
-//		Collections collection = new ArrayList();
-//		java.util.Collections collection = new ArrayList();
-//      Add the DVD objects to the ArrayList
-//		collection.add(dvd2);
+    public static void main(String[] args) throws LimitExceedException, LimitExceededException {
         //option
         int option;
         int flagOption = 0;
@@ -200,7 +192,7 @@ public class Aims {
         int length = keyboard.nextInt();
         keyboard.nextLine();
 
-        return new DigitalVideoDisc(MediaID, title, category, length, director, cost);
+        return new DigitalVideoDisc(MediaID, title, category, cost, director, length);
     }
 
     public static CompactDisc createCompactDisc(int MediaID) {
@@ -242,7 +234,11 @@ public class Aims {
             switch (ask) {
                 case "yes":
                     System.out.println("===============================");
-                    cd.play();
+                    try {
+                        cd.play();
+                    } catch (PlayerException e) {
+                        e.printStackTrace();
+                    }
                     System.out.println("===============================");
                     break;
                 case "no":

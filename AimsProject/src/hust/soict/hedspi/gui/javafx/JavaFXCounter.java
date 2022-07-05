@@ -11,15 +11,14 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 
 public class JavaFXCounter extends Application {
-	private TextField tfCount;
-	private Button btnCount;
+	private final TextField tfCount;
 	private int count = 0;
 
 //	@Override
 	public JavaFXCounter() {
 		tfCount = new TextField("0");
 		tfCount.setEditable(false);
-		btnCount = new Button("Count");
+		Button btnCount = new Button("Count");
 
 		btnCount.setOnAction(evt -> tfCount.setText(++count + ""));
 
@@ -44,7 +43,7 @@ public class JavaFXCounter extends Application {
 	}
 
 	@Override
-	public void start(Stage arg0) throws Exception {
+	public void start(Stage arg0) {
 		// TODO Auto-generated method stub
 	}
 }

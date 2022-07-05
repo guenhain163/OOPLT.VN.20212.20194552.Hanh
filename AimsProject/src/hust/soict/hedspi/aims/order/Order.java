@@ -1,27 +1,58 @@
 package hust.soict.hedspi.aims.order;
 
+import hust.soict.hedspi.aims.exceptions.LimitExceedException;
 import hust.soict.hedspi.aims.media.Media;
 import hust.soict.hedspi.aims.utils.MyDate;
 
+import javax.naming.LimitExceededException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Random;
 
 public class Order {
     // Declare 1 constant: maximum number of products per order
     public static final int MAX_NUMBERS_ORDERED = 10;
-    public static final int MAX_LIMITED_ORDERED = 5;
-    // Declare an array of DVD objects
-    private final ArrayList<Media> itemsOrdered = new ArrayList<Media>();
-
-    private MyDate dateOrdered = new MyDate();
+    public static final int MAX_LIMITED_ORDERS = 5;
+    private static final int LUCKY_PROBABILITY = 8;
+    public static final int LUCKY_MIN_NUMBER_OF_ITEMS = 3;
+    public static final float LUCKY_MIN_TOTAL_COST = 100.00f;
+    private static final float LUCKY_LEVEL_1 = 300.00f;
+    private static final float LUCKY_LEVEL_2 = 1000.00f;
+    private static final float LUCKY_LEVEL_3 = 5000.00f;
+    private static final float LUCKY_MIN_VALUE = 1.00f;
+    private static final float LUCKY_MAX_VALUE_1 = 30.00f;
+    private static final float LUCKY_MAX_VALUE_2 = 100.00f;
+    private static final float LUCKY_MAX_VALUE_3 = 500.00f;
+    private static final float LUCKY_MAX_VALUE_4 = 1000.00f;
     public static int nbOrders = 0;
+    private float thresholdsTotal = 300f;
+    private float thresholdsSale = 100f;
+    private int thresholdsItems = 3;
+    private int thresholdsNumOfOrders = 5;
+    // Declare an array of DVD objects
+    private ArrayList<Media> itemsOrdered = new ArrayList<Media>();
+    private MyDate dateOrdered = new MyDate();
+    private int id;
 
-    public Order() {
-        if (nbOrders >= MAX_LIMITED_ORDERED) {
-            System.out.println("Over numbers of order!");
-        } else {
+    public Order(int id) throws LimitExceededException {
+        if (nbOrders < MAX_LIMITED_ORDERS) {
+            this.id = id;
+            this.dateOrdered = new MyDate();
+            this.itemsOrdered = new ArrayList<Media>();
             nbOrders++;
+            if (nbOrders == MAX_LIMITED_ORDERS) {
+                System.out.println("\nThe Number of orders reached max! Please purchase your orders!\n");
+            }
+        } else {
+            throw new LimitExceededException("ERROR: The number of orders has reached its limit!");
+        }
+    }
+
+    public Order() throws LimitExceedException {
+        if (nbOrders < MAX_LIMITED_ORDERS) {
+            dateOrdered = new MyDate();
+            nbOrders++;
+        } else {
+            throw new LimitExceedException("ERROR: The number of orders has reached its limit!");
         }
     }
 
@@ -34,73 +65,126 @@ public class Order {
         return dateOrdered;
     }
 
-    public static Order getOrder() {
-        if(nbOrders < MAX_LIMITED_ORDERED) {
-            Order newOrder = new Order();
-            nbOrders++;
-            System.out.println("Creat new order successfully!");
-            return newOrder;
-        } else {
-            System.out.println("The numbers of orders is almost max.");
-            return null;
-        }
+    public void setThresholds(float thresholdsTotal, int thresholdsItems) {
+        this.thresholdsTotal = thresholdsTotal;
+        this.thresholdsItems = thresholdsItems;
+    }
+    public float getThresholdsTotal() {
+        return thresholdsTotal;
     }
 
-    public void addMedia(Media media) {
-        if (!(itemsOrdered.contains(media))) {
+    public void setThresholdsTotal(float thresholdsTotal) {
+        this.thresholdsTotal = thresholdsTotal;
+    }
+
+    public float getThresholdsSale() {
+        return thresholdsSale;
+    }
+
+    public void setThresholdsSale(float thresholdsSale) {
+        this.thresholdsSale = thresholdsSale;
+    }
+
+    public int getThresholdsNumOfOrders() {
+        return thresholdsNumOfOrders;
+    }
+
+    public void setThresholdsNumOfOrders(int thresholdsNumOfOrders) {
+        this.thresholdsNumOfOrders = thresholdsNumOfOrders;
+    }
+
+    public ArrayList<Media> getItemsOrdered() {
+        return itemsOrdered;
+    }
+
+    public boolean addMedia(Media media) throws LimitExceededException {
+        if (this.itemsOrdered.size() < MAX_NUMBERS_ORDERED)  {
             this.itemsOrdered.add(media);
-            System.out.println("MSG: The media with title: " + media.getTitle() + " has been added.");
+            int currentOrderSize = this.itemsOrdered.size();
+
+            System.out.println("Item \"" + media.getTitle() + "\" has been added to Order! " +
+                    "The number of items in order now is " + currentOrderSize + ".");
+            if (currentOrderSize == MAX_NUMBERS_ORDERED) {
+                System.out.println("The Order is full! Lets purchase your Order!");
+            }
+
+            return true;
         } else {
-            System.err.println("ERR: The media with title: " + media.getTitle() + " is existed!");
+            throw new LimitExceededException("ERROR: The number of items in the order has reached its limit!");
         }
     }
 
-    public void addMedia(Media[] mediaList) {
+    public void addMedia(Media[] mediaList) throws LimitExceededException {
         for (Media media : mediaList) {
             this.addMedia(media);
         }
     }
 
-    public void addMedia(Media media1, Media media2) {
+    public void addMedia(Media media1, Media media2) throws LimitExceededException {
         this.addMedia(media1);
         this.addMedia(media2);
     }
 
-    public void removeMedia(Media media) {
-        if(itemsOrdered.contains(media)) {
-            System.out.println("MSG: Media with ID: " + media.getId() + " has been deleted!");
+    public Media removeMedia(Media media) throws IllegalStateException, IllegalArgumentException {
+        if (this.itemsOrdered.size() != 0 && this.itemsOrdered.contains(media)) {
+            System.out.println("input id : " + media.getId());
+            System.out.println("size : " + this.itemsOrdered.size());
+            System.out.println(this.itemsOrdered.contains(media));
+
+            // reset id of the item(s) behind the removed item
+            int removeMediaId = this.itemsOrdered.indexOf(media);
+            for (int i = removeMediaId + 1; i < this.itemsOrdered.size(); i++) {
+                this.itemsOrdered.get(i).setId(i - 1);
+            }
+
+            Media removedMedia = this.itemsOrdered.get(removeMediaId);
+
             this.itemsOrdered.remove(media);
-        }else {
-            System.err.println("ERR: The media may not exist!");
+
+            System.out.println("Item \"" + media.getTitle() + "\" has been removed from Order! " +
+                    "The number of items in order now is " + this.itemsOrdered.size() + ".");
+
+            return removedMedia;
+        } else if (this.itemsOrdered.size() == 0) {
+            throw new IllegalStateException("ERROR: the order is empty!");
+        } else {
+            throw new IllegalArgumentException("ERROR: item not found!");
         }
     }
 
-    public void removeMedia(int ID) {
-        boolean found = false;
-        for(Media media: itemsOrdered) {
-            if(media.getId() == ID) {
-                removeMedia(media);
-//                System.out.println("Successfully remove items with ID: " + ID);
-                found = true;
-                break;
-            }
+    public Media removeMedia(int mediaId) throws IllegalStateException, IllegalArgumentException {
+        Media removedMedia = null;
+
+        try {
+            removeMedia(this.itemsOrdered.get(mediaId));
+        } catch (IllegalStateException | IllegalArgumentException e) {
+            throw e;
         }
 
-        if (!found) System.out.println("No items with ID: " + ID);
+        return removedMedia;
+    }
 
-        System.out.println();
+    public Media searchById(int id){
+        return this.itemsOrdered.stream().filter(o->o.getId() == id).findFirst().orElse(null);
     }
 
     public float totalCost(){
         // store the running total of the items in the order
         float total = 0;
         Media mediaItem;
-        Iterator<Media> iter = itemsOrdered.iterator();
-        while (iter.hasNext()) {
-            mediaItem = (Media) (iter.next());
+        for (Media media : itemsOrdered) {
+            mediaItem = media;
             total += mediaItem.getCost();
         }
         return total;
+    }
+
+    public int getNumItem(){
+        return itemsOrdered.size();
+    }
+
+    public void display(){
+        this.itemsOrdered.forEach(o -> System.out.println(o.toString()));
     }
 
     public void printOrder() {
@@ -121,12 +205,52 @@ public class Order {
         System.out.println("**********************************\n");
     }
 
-    // Xây dựng phương thức chọn một sản phẩm
-    // ngẫu nhiên trong danh sách và miễn phí cho sản phẩm đó
-    public Media getALuckyItem() {
-        Random rd = new Random();
-        int luckyNumber = rd.nextInt(this.itemsOrdered.size());
-//        this.itemsOrdered.get(luckyNumber).setCost(0);
-        return this.itemsOrdered.get(luckyNumber);
+    public float getALuckyItem() {
+        if (this.itemsOrdered.size() < thresholdsItems) {
+            return 0.00f;
+        }
+        // the condition can be adjusted but must be greater than the default condition
+        if (thresholdsTotal < LUCKY_MIN_TOTAL_COST) {
+            thresholdsTotal = LUCKY_MIN_TOTAL_COST;
+        }
+        if (this.totalCost() < thresholdsTotal) {
+            return 0.00f;
+        }
+        int luckyRatio = getRandomNumber(1, 10);
+
+        if (luckyRatio < LUCKY_PROBABILITY) {
+            return 0.00f;
+        }
+
+        // get the max value of lucky item
+        float maxLuckyValue = 0.00f;
+        if (this.totalCost() < LUCKY_LEVEL_1) {         // total cost = 100.00 ~ 299.99 $
+            maxLuckyValue = LUCKY_MAX_VALUE_1;
+        } else if (this.totalCost() < LUCKY_LEVEL_2) {  // total cost = 300.00 ~ 999.99 $
+            maxLuckyValue = LUCKY_MAX_VALUE_2;
+        } else if (this.totalCost() < LUCKY_LEVEL_3) {  // total cost = 1000.00 ~ 4999.99 $
+            maxLuckyValue = LUCKY_MAX_VALUE_3;
+        } else {                                        // total cost >= 5000.00 $
+            maxLuckyValue = LUCKY_MAX_VALUE_4;
+        }
+
+        // random the lucky item value
+        Random rand = new Random();
+        float randomValue = LUCKY_MIN_VALUE + rand.nextFloat() * (maxLuckyValue - LUCKY_MIN_VALUE);
+        float luckyItemValue = round2DecimalPoints(randomValue);
+
+        // inform the user
+        System.out.println("Congratulation! You won a lucky item that costs " + luckyItemValue + "$ !");
+
+        return luckyItemValue;
+    }
+
+    float round2DecimalPoints(float floatNumber) {
+        return Math.round(floatNumber * 100.0f) / 100.0f;
+    }
+
+    private int getRandomNumber(int min, int max) {
+        int range = (max - min) + 1;
+        return (int)(Math.random() * range) + min;
     }
 }

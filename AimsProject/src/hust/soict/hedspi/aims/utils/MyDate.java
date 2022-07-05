@@ -1,7 +1,6 @@
 package hust.soict.hedspi.aims.utils;
 
 import java.time.LocalDate;
-import java.util.*;
 
 public class MyDate {
 
@@ -187,7 +186,7 @@ public class MyDate {
         if ("d/M/yyyy".equals(format)) {
             System.out.println(this.getDay() + "/" + this.getMonth() + "/" + this.getYear());
         }
-        if ("dd-MMM-yyy".equals(format)) {
+        if ("dd-MMM-yyyy".equals(format)) {
             System.out.println((this.getDay() < 10 ? "0" : "") + this.getDay() + "-" +
                     strMonths[this.getMonth() - 1] + "-" + this.getYear());
         }
@@ -198,5 +197,95 @@ public class MyDate {
             System.out.println((this.getMonth() < 10 ? "0" : "") + this.getMonth() + "-" +
                     (this.getDay() < 10 ? "0" : "") + this.getYear() + "-" + this.getYear());
         }
+    }
+
+    // convert month from int to string
+    public String getMonthName(int month, int mode) {
+        String outputMonth = switch (month) {
+            case 1 -> "Jan";
+            case 2 -> "Feb";
+            case 3 -> "Mar";
+            case 4 -> "Apr";
+            case 5 -> "May";
+            case 6 -> "Jun";
+            case 7 -> "Jul";
+            case 8 -> "Aug";
+            case 9 -> "Sep";
+            case 10 -> "Oct";
+            case 11 -> "Nov";
+            case 12 -> "Dec";
+            default -> throw new ArithmeticException("Invalid month");
+        };
+
+        if (mode == 0) {
+            // if mode == 0 -> return the abbreviation of the month
+            return outputMonth;
+        } else if (mode == 1) {
+            // if mode == 1 -> return the abbreviation with the '.'
+            outputMonth += ".";
+            return outputMonth;
+        } else if (mode == 2) {
+            switch (month) {
+                case 1 -> outputMonth += /*Jan*/"uary";
+                case 2 -> outputMonth += /*Feb*/"ruary";
+                case 3 -> outputMonth += /*Mar*/"ch";
+                case 4 -> outputMonth += /*Apr*/"il";
+
+                // case 5: outputMonth = "May"; break;
+                case 6 -> outputMonth += /*Jun*/"e";
+                case 7 -> outputMonth += /*Jul*/"y";
+                case 8 -> outputMonth += /*Aug*/"ust";
+                case 9 -> outputMonth += /*Sep*/"tember";
+                case 10 -> outputMonth += /*Oct*/"ober";
+                case 11 -> outputMonth += /*Nov*/"ember";
+                case 12 -> outputMonth += /*Dec*/"ember";
+                default -> {
+                }
+            }
+            return outputMonth;
+        } else {
+            throw new ArithmeticException("Invalid mode for month string");
+        }
+    }
+
+    // convert month from string to int
+    public int getMonthValue(String month) {
+        return switch (month) {
+            case "January", "Jan.", "Jan", "1" -> 1;
+            case "February", "Feb.", "Feb", "2" -> 2;
+            case "March", "Mar.", "Mar", "3" -> 3;
+            case "April", "Apr.", "Apr", "4" -> 4;
+            case "May", "May.", "5" -> 5;
+            case "June", "Jun.", "Jun", "6" -> 6;
+            case "July", "Jul.", "Jul", "7" -> 7;
+            case "August", "Aug.", "Aug", "8" -> 8;
+            case "September", "Sep.", "Sep", "9" -> 9;
+            case "October", "Oct.", "Oct", "10" -> 10;
+            case "November", "Nov.", "Nov", "11" -> 11;
+            case "December", "Dec.", "Dec", "12" -> 12;
+            default -> throw new ArithmeticException("Invalid month");
+        };
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+
+        // append month
+        sb.append(this.getMonthName(this.getMonth(), 2)).append(" ");
+
+        // append day
+        sb.append(this.getDay());
+        switch (this.getDay()) {
+            case 1, 21, 31 -> sb.append("st ");
+            case 2, 22 -> sb.append("nd ");
+            case 3 -> sb.append("rd ");
+            default -> sb.append("th ");
+        }
+
+        // append year
+        sb.append(this.getYear());
+
+        return sb.toString();
     }
 }
